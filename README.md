@@ -11,7 +11,6 @@ MHServerEmuUI provides an interface for managing the MHServerEmu game server. De
 - **Event Management**: Toggle special events like Cosmic Chaos and Armor Incursion with just a click.
 - **Live Tuning Adjustments**: Easily modify game settings in real-time, including XP rates, loot drop chances, and more.
 - **Nightly Updates**: One button click to download and apply the latest server updates.
-- **Backup Management**: Ensure critical files like `config.ini`, live tuning data and custom store are preserved during updates.
 - **Broadcast Messaging**: Send server-wide announcements to keep players informed.
 - **Server shutdown timer**: Send a server-wide message that the server is going to shutdown with the number of minutes until it happens.
 
@@ -35,7 +34,7 @@ MHServerEmuUI provides an interface for managing the MHServerEmu game server. De
 
 3. **First Run**:
    - Launch MHServerEmuUI.
-   - In the **MHServerEmu Folder** text box, set the location of your extracted server folder (e.g., `C:\MHServerEmu-0.4.0`).
+   - In the **MHServerEmu Folder** text box, set the location of your extracted server folder (e.g., `C:\MHServerEmu-0.7.0`).
 
 ---
 
@@ -48,8 +47,7 @@ MHServerEmuUI provides an interface for managing the MHServerEmu game server. De
   - **Midtown Madness**
 - **Live Tuning Updates**: Adjust server settings in the `LiveTuningData.json` file dynamically.
 - **Easy Updates**:
-  - Download and apply the latest server builds.
-  - Preserve critical files during updates (e.g., `config.ini`, live tuning data, and custom store files).
+  - Download and apply the latest server builds..
 - **Broadcast Messaging**:
   - Send player notifications during events or server shutdowns.
 
