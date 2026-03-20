@@ -1186,6 +1186,7 @@ void MainWindow::onPushButtonLoadConfigClicked()
     ui->lineEditNewsUrl->setText(getVal("PlayerManager/NewsUrl").toString());
     ui->lineEditServerCapacity->setText(getVal("PlayerManager/ServerCapacity").toString());
     ui->lineEditMaxLoginQueueClients->setText(getVal("PlayerManager/MaxLoginQueueClients").toString());
+    ui->checkBoxEnableTownPlayerLimit->setChecked(getVal("PlayerManager/EnableTownPlayerLimit", false).toBool());
 
     // --- SQLiteDBManager ---
     ui->lineEditSQLiteFileName->setText(getVal("SQLiteDBManager/FileName").toString());
@@ -1202,6 +1203,11 @@ void MainWindow::onPushButtonLoadConfigClicked()
     ui->lineEditServerName->setText(getVal("GroupingManager/ServerName").toString());
     ui->textEditMotdText->setPlainText(getVal("GroupingManager/MotdText").toString());
     ui->comboBoxServerPrestigeLevel->setCurrentIndex(getVal("GroupingManager/ServerPrestigeLevel", 0).toInt());
+    ui->checkBoxLogPrivateChatRooms->setChecked(getVal("GroupingManager/LogPrivateChatRooms", false).toBool());
+    ui->checkBoxEnableChatTips->setChecked(getVal("GroupingManager/EnableChatTips", false).toBool());
+    ui->lineEditChatTipFileName->setText(getVal("GroupingManager/ChatTipFileName").toString());
+    ui->lineEditChatTipIntervalMinutes->setText(getVal("GroupingManager/ChatTipIntervalMinutes").toString());
+    ui->checkBoxChatTipShuffle->setChecked(getVal("GroupingManager/ChatTipShuffle", false).toBool());
 
     // --- GameInstance ---
     ui->lineEditNumWorkerThreads->setText(getVal("GameInstance/NumWorkerThreads").toString());
@@ -1234,18 +1240,24 @@ void MainWindow::onPushButtonLoadConfigClicked()
     ui->checkBoxOrbisTrophiesEnabled->setChecked(getVal("GameOptions/OrbisTrophiesEnabled", false).toBool());
 
     // --- CustomGameOptions ---
+    ui->lineEditAutosaveIntervalMinutes->setText(getVal("CustomGameOptions/AutosaveIntervalMinutes").toString());
     ui->lineEditESCooldownOverrideMinutes->setText(getVal("CustomGameOptions/ESCooldownOverrideMinutes").toString());
     ui->checkBoxCombineESStacks->setChecked(getVal("CustomGameOptions/CombineESStacks", false).toBool());
     ui->checkBoxAutoUnlockAvatars->setChecked(getVal("CustomGameOptions/AutoUnlockAvatars", false).toBool());
     ui->checkBoxAutoUnlockTeamUps->setChecked(getVal("CustomGameOptions/AutoUnlockTeamUps", false).toBool());
     ui->checkBoxDisableMovementPowerChargeCost->setChecked(getVal("CustomGameOptions/DisableMovementPowerChargeCost", false).toBool());
     ui->checkBoxAllowSameGroupTalents->setChecked(getVal("CustomGameOptions/AllowSameGroupTalents", false).toBool());
+    ui->checkBoxEnableCreditChestConversion->setChecked(getVal("CustomGameOptions/EnableCreditChestConversion", false).toBool());
+    ui->lineEditCreditChestConversionMultiplier->setText(getVal("CustomGameOptions/CreditChestConversionMultiplier").toString());
     ui->checkBoxDisableInstancedLoot->setChecked(getVal("CustomGameOptions/DisableInstancedLoot", false).toBool());
     ui->lineEditLootSpawnGridCellRadius->setText(getVal("CustomGameOptions/LootSpawnGridCellRadius").toString());
     ui->lineEditTrashedItemExpirationTimeMultiplier->setText(getVal("CustomGameOptions/TrashedItemExpirationTimeMultiplier").toString());
     ui->checkBoxDisableAccountBinding->setChecked(getVal("CustomGameOptions/DisableAccountBinding", false).toBool());
     ui->checkBoxDisableCharacterBinding->setChecked(getVal("CustomGameOptions/DisableCharacterBinding", false).toBool());
+    ui->checkBoxDisableMissionXPBonuses->setChecked(getVal("CustomGameOptions/DisableMissionXPBonuses", false).toBool());
     ui->checkBoxUsePrestigeLootTable->setChecked(getVal("CustomGameOptions/UsePrestigeLootTable", false).toBool());
+    ui->checkBoxEnableUltimatePrestige->setChecked(getVal("CustomGameOptions/EnableUltimatePrestige", false).toBool());
+    ui->checkBoxApplyHiddenPvPDamageModifiers->setChecked(getVal("CustomGameOptions/ApplyHiddenPvPDamageModifiers", false).toBool());
 
     // --- MTXStore ---
     ui->lineEditGazillioniteBalanceForNewAccounts->setText(getVal("MTXStore/GazillioniteBalanceForNewAccounts").toString());
@@ -1327,6 +1339,7 @@ void MainWindow::onPushButtonSaveConfigClicked() {
         {"PlayerManager/NewsUrl", ui->lineEditNewsUrl->text()},
         {"PlayerManager/ServerCapacity", ui->lineEditServerCapacity->text()},
         {"PlayerManager/MaxLoginQueueClients", ui->lineEditMaxLoginQueueClients->text()},
+        {"PlayerManager/EnableTownPlayerLimit", ui->checkBoxEnableTownPlayerLimit->isChecked() ? "true" : "false"},
         {"SQLiteDBManager/FileName", ui->lineEditSQLiteFileName->text()},
         {"SQLiteDBManager/MaxBackupNumber", ui->lineEditSQLiteMaxBackupNumber->text()},
         {"SQLiteDBManager/BackupIntervalMinutes", ui->lineEditSQLiteBackupIntervalMinutes->text()},
@@ -1337,7 +1350,11 @@ void MainWindow::onPushButtonSaveConfigClicked() {
         {"GroupingManager/ServerName", ui->lineEditServerName->text()},
         {"GroupingManager/MotdText", ui->textEditMotdText->toPlainText()},
         {"GroupingManager/ServerPrestigeLevel", QString::number(ui->comboBoxServerPrestigeLevel->currentIndex())},
-        {"GroupingManager/LogTells", ui->checkBoxLogTells->isChecked() ? "true" : "false"},
+        {"GroupingManager/LogPrivateChatRooms", ui->checkBoxLogPrivateChatRooms->isChecked() ? "true" : "false"},
+        {"GroupingManager/EnableChatTips", ui->checkBoxEnableChatTips->isChecked() ? "true" : "false"},
+        {"GroupingManager/ChatTipFileName", ui->lineEditChatTipFileName->text()},
+        {"GroupingManager/ChatTipIntervalMinutes", ui->lineEditChatTipIntervalMinutes->text()},
+        {"GroupingManager/ChatTipShuffle", ui->checkBoxChatTipShuffle->isChecked() ? "true" : "false"},
         {"GameInstance/NumWorkerThreads", ui->lineEditNumWorkerThreads->text()},
         {"GameData/LoadAllPrototypes", ui->checkBoxLoadAllPrototypes->isChecked() ? "true" : "false"},
         {"GameData/UseEquipmentSlotTableCache", ui->checkBoxUseEquipmentSlotTableCache->isChecked() ? "true" : "false"},
@@ -1362,18 +1379,24 @@ void MainWindow::onPushButtonSaveConfigClicked() {
         {"GameOptions/ChatBanVoteLoginCountRequired", ui->lineEditChatBanVoteLoginCountRequired->text()},
         {"GameOptions/IsDifficultySliderEnabled", ui->checkBoxIsDifficultySliderEnabled->isChecked() ? "true" : "false"},
         {"GameOptions/OrbisTrophiesEnabled", ui->checkBoxOrbisTrophiesEnabled->isChecked() ? "true" : "false"},
+        {"CustomGameOptions/AutosaveIntervalMinutes", ui->lineEditAutosaveIntervalMinutes->text()},
         {"CustomGameOptions/ESCooldownOverrideMinutes", ui->lineEditESCooldownOverrideMinutes->text()},
         {"CustomGameOptions/CombineESStacks", ui->checkBoxCombineESStacks->isChecked() ? "true" : "false"},
         {"CustomGameOptions/AutoUnlockAvatars", ui->checkBoxAutoUnlockAvatars->isChecked() ? "true" : "false"},
         {"CustomGameOptions/AutoUnlockTeamUps", ui->checkBoxAutoUnlockTeamUps->isChecked() ? "true" : "false"},
         {"CustomGameOptions/DisableMovementPowerChargeCost", ui->checkBoxDisableMovementPowerChargeCost->isChecked() ? "true" : "false"},
         {"CustomGameOptions/AllowSameGroupTalents", ui->checkBoxAllowSameGroupTalents->isChecked() ? "true" : "false"},
+        {"CustomGameOptions/EnableCreditChestConversion", ui->checkBoxEnableCreditChestConversion->isChecked() ? "true" : "false"},
+        {"CustomGameOptions/CreditChestConversionMultiplier", ui->lineEditCreditChestConversionMultiplier->text()},
         {"CustomGameOptions/DisableInstancedLoot", ui->checkBoxDisableInstancedLoot->isChecked() ? "true" : "false"},
         {"CustomGameOptions/LootSpawnGridCellRadius", ui->lineEditLootSpawnGridCellRadius->text()},
         {"CustomGameOptions/TrashedItemExpirationTimeMultiplier", ui->lineEditTrashedItemExpirationTimeMultiplier->text()},
         {"CustomGameOptions/DisableAccountBinding", ui->checkBoxDisableAccountBinding->isChecked() ? "true" : "false"},
         {"CustomGameOptions/DisableCharacterBinding", ui->checkBoxDisableCharacterBinding->isChecked() ? "true" : "false"},
+        {"CustomGameOptions/DisableMissionXPBonuses", ui->checkBoxDisableMissionXPBonuses->isChecked() ? "true" : "false"},
         {"CustomGameOptions/UsePrestigeLootTable", ui->checkBoxUsePrestigeLootTable->isChecked() ? "true" : "false"},
+        {"CustomGameOptions/EnableUltimatePrestige", ui->checkBoxEnableUltimatePrestige->isChecked() ? "true" : "false"},
+        {"CustomGameOptions/ApplyHiddenPvPDamageModifiers", ui->checkBoxApplyHiddenPvPDamageModifiers->isChecked() ? "true" : "false"},
         {"MTXStore/GazillioniteBalanceForNewAccounts", ui->lineEditGazillioniteBalanceForNewAccounts->text()},
         {"MTXStore/ESToGazillioniteConversionRatio", ui->lineEditESToGazillioniteConversionRatio->text()},
         {"MTXStore/ESToGazillioniteConversionStep", ui->lineEditESToGazillioniteConversionStep->text()},
