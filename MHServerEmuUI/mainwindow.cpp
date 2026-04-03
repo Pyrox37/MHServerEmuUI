@@ -1941,7 +1941,7 @@ void MainWindow::onPandemoniumProtocolToggle(int value) {
 }
 
 void MainWindow::runPandemoniumProtocol() {
-    QString filePath = ui->mhServerPathEdit->text() + "/MHServerEmu/Data/Game/LiveTuningDataz_PandemoniumProtocol.json";
+    QString filePath = ui->mhServerPathEdit->text() + "/MHServerEmu/Data/Game/LiveTuning/LiveTuningDataz_PandemoniumProtocol.json";
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -2016,7 +2016,7 @@ void MainWindow::runPandemoniumProtocol() {
         "OdinsBounty"
     };
 
-    QString serverPath = ui->mhServerPathEdit->text() + "/MHServerEmu/Data/Game/";
+    QString serverPath = ui->mhServerPathEdit->text() + "/MHServerEmu/Data/Game/LiveTuning/";
 
     if (!currentSubEvent.isEmpty()) {
         QString activePath = serverPath + "LiveTuningData_" + currentSubEvent + ".json";
